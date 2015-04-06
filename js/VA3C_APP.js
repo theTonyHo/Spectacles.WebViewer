@@ -971,6 +971,9 @@ var VA3C_CONSTRUCTOR = function (divToBind, jsonFileData, callback) {
     //attributes object.  Contains logic for element selection and attribute list population
     VA3C.attributes = {};
 
+    //top level property to track whether or not element attributes have been enabled
+    VA3C.attributesEnabled = false;
+
     //element list.  This gets populated after a json file is loaded, and is used to check for intersections
     VA3C.attributes.elementList = [];
 
@@ -983,6 +986,8 @@ var VA3C_CONSTRUCTOR = function (divToBind, jsonFileData, callback) {
 
         //attribute properties used throughout attribute / selection code
 
+        //set the state of this guy to true
+        VA3C.attributesEnabled = true;
 
         //the three projector object used for turning a mouse click into a selection
         VA3C.attributes.projector = new THREE.Projector();
@@ -1298,7 +1303,9 @@ var VA3C_CONSTRUCTOR = function (divToBind, jsonFileData, callback) {
 
     //function to purge local variables within this object.  When a user loads a new scene, we have to clear out the old stuff
     VA3C.attributes.purge = function () {
-        this.restorePreviouslySelectedObject();
+        if (VA3C.attributesEnabled) {
+            this.restorePreviouslySelectedObject();
+        }
         this.elementList = [];
     };
 
