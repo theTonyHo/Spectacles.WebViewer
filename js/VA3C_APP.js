@@ -64,8 +64,8 @@ var VA3C_CONSTRUCTOR = function (divToBind, jsonFileData, callback) {
 
             //get upper left coordinates of the viewer div - we'll use these for positioning
             var win = $(window);
-            var x = (VA3C.viewerDiv.offset().left - win.scrollLeft()) / 2;
-            var y = (VA3C.viewerDiv.offset().top - win.scrollTop()) / 2;
+            var x = ((VA3C.viewerDiv.offset().left + VA3C.viewerDiv.outerWidth()) - win.scrollLeft()) / 2;
+            var y = ((VA3C.viewerDiv.offset().top + VA3C.viewerDiv.outerHeight()) - win.scrollTop()) / 2;
 
             //set the position and size
             targetDiv.css('left', x.toString() + "px");
