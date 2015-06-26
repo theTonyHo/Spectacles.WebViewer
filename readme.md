@@ -2,7 +2,7 @@ Spectacles Viewer
 ======
 Spectacles is an open source, 3D model viewer for AEC models that uses THREE.js to render 3D geometry in the browser. Spectacles allows authors in the AEC industry to easily publish their 3D design work on the web, for free.  
 
-Spectacles is a fork of the [vA3C viewer](http://va3c.github.io/) project which was launched at the [AEC Technology Hackathon](http://core.thorntontomasetti.com/aec-technology-symposium-2014/aec-technology-symposium-2014-hackathon/) in NYC in May of 2014.  The idea for the project was first outlined [here](https://www.hackerleague.org/hackathons/aec-technology-hackathon-2014/hacks/three-dot-js-aec-viewer-model-exporters) by Benjamin Howes.  The original vA3C viewer was built by Theo Armour, Josh Wentz, Jonatan Schumacher, Benjamin Howes, and Jeremy Tammik.  Thornton Tomasetti's CORE studio is currently developing Spectacles.
+Spectacles is a fork of the [vA3C viewer](http://va3c.github.io/) project which was launched at the [AEC Technology Hackathon](http://core.thorntontomasetti.com/aec-technology-symposium-2014/aec-technology-symposium-2014-hackathon/) in NYC in May of 2014.  The idea for the project was first outlined [here](https://www.hackerleague.org/hackathons/aec-technology-hackathon-2014/hacks/three-dot-js-aec-viewer-model-exporters) by Benjamin Howes.  The original vA3C viewer was built by Theo Armour, Josh Wentz, Jonatan Schumacher, Benjamin Howes, and Jeremy Tammik.  Thornton Tomasetti's [CORE studio](http://tt-acm.github.io/Spectacles.WebViewer/) is currently developing Spectacles.
 
 Goals
 ======
