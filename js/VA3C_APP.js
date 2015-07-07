@@ -1597,5 +1597,9 @@ var VA3C_CONSTRUCTOR = function (divToBind, jsonFileData, callback) {
 
 
 
+//sample extension method.  Thinking about breaking this into multiple files eventually...
+VA3C_CONSTRUCTOR.prototype.foo = function(){
+    console.log("bar");
+};
 
 

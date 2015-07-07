@@ -22,6 +22,21 @@ $(document).ready(function(){
             app.viewAndSelectionUI();
             app.viewsUI();
             app.layersUI();
+
+            //call extension method
+            app.foo();
+
+            //override an existing method and optionally call the original
+            //pretty rad, still a little fuzzy.
+            (function(){
+                var oldAttributes = app.attributes.populateAttributeList;
+                app.attributes.populateAttributeList = function(j){
+                    console.log(j);
+                    oldAttributes(j);
+                }
+            })();
+
+
         });
     });
 });
