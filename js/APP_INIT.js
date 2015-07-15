@@ -3,16 +3,19 @@
  */
 
 //contains the jquery document.ready callback, which starts the application
-var myVA3C;
 
+//a global variable to store our running Spectacles App
+var mySpectacles;
+
+//fires when everything has loaded
 $(document).ready(function(){
 
     //load our sample JSON file from disk
     $.getJSON("./js/va3c.json", function( data ){
 
-        //once loaded, initialize a VA3C viewer by passing in the div to bind to, the json data, and a callback function
+        //once loaded, initialize a Spectacles viewer by passing in the div to bind to, the json data, and a callback function
         //where we can enable application functionality in nice clean chunks
-        myVA3C = new VA3C_CONSTRUCTOR($("#vA3C_output"), data, function(app){
+        mySpectacles = new SPECTACLES($("#Spectacles_output"), data, function(app){
 
             //call the UI / functionality modules
             app.userInterface();
@@ -22,8 +25,6 @@ $(document).ready(function(){
             app.viewAndSelectionUI();
             app.viewsUI();
             app.layersUI();
-
-
         });
     });
 });

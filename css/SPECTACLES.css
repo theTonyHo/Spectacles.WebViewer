@@ -45,12 +45,12 @@
     margin: 0px;
 }
 
-.vA3C_openButton{
+.Spectacles_openButton {
     margin: 25px;
     justify-content: center;
 }
 
-.vA3C_blackout{
+.Spectacles_blackout {
     position: fixed;
     background-color: black;
     opacity: 0.66;
@@ -58,7 +58,7 @@
     z-index: 1000;
 }
 
-.vA3C_loading{
+.Spectacles_loading {
     position: fixed;
     margin-left: -75px;
     display: none;
@@ -70,7 +70,7 @@
 
 }
 
-.vA3C_uiTarget{
+.Spectacles_uiTarget {
     position: fixed;
     width: 300px;
     z-index: 10;
