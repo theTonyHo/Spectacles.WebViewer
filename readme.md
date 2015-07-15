@@ -1,3 +1,5 @@
+![Spectacles Logo](/docs/SPECTACLES_LOGO.jpg)
+
 Spectacles 3D Model Viewer
 ======
 Spectacles is an open source, 3D model viewer for AEC models that uses THREE.js to render 3D geometry in the browser. Spectacles allows authors in the AEC industry to easily publish their 3D design work on the web, for free.  
