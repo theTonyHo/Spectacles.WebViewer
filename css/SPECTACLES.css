@@ -1,7 +1,7 @@
 
 
 
-.vA3C_attributeList {
+.Spectacles_attributeList {
     height: 1px;
     width: 360px;
     background-color: #fafafa;
@@ -17,18 +17,18 @@
 }
 
 
-.vA3C_attributeList h5 {
+.Spectacles_attributeList h5 {
     display: inline;
     color : lightslategray;;
 }
 
-.vA3C_attributeListHeader{
+.Spectacles_attributeListHeader {
     background-color: #e8e8e8;
     font-size: 13px;
     padding: 5px 2px;
 }
 
-.vA3C_openFile{
+.Spectacles_openFile {
     padding: 10px;
     background-color: #ffffff;
     visibility: hidden;
@@ -41,7 +41,7 @@
     font-size: 100%;
 }
 
-.vA3C_openFile h2 {
+.Spectacles_openFile h2 {
     margin: 0px;
 }
 
@@ -66,7 +66,7 @@
     color: #ffffff;
 }
 
-.vA3C_errorMessage{
+.Spectacles_errorMessage {
 
 }
 

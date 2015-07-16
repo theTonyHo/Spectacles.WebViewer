@@ -3,7 +3,7 @@
  * Extended by Ana Garcia Puyol on 4/1/2015
  */
 
-//base application object containing vA3C functions and properties
+//base application object containing Spectacles functions and properties
 var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
     var SPECT = this;        //a local app object we can work with inside of the constructor to avoid 'this' confusion.
@@ -55,7 +55,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
 
         //append the loading div and let it respond to the parent div resizing
-        SPECT.viewerDiv.append("<div class='Spectacles_loading'><h1>Loading vA3C JSON file...</h1></div>");
+        SPECT.viewerDiv.append("<div class='Spectacles_loading'><h1>Loading Spectacles .json file...</h1></div>");
         //function to position the loading div
         var setLoading = function () {
 
@@ -80,7 +80,6 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
         //empty scene
         SPECT.scene = new THREE.Scene();
-        //VA3C.scene.fog = new THREE.FogExp2(0x000000, 0.0025);
 
         //set up the THREE.js div and renderer
         SPECT.container = viewerDiv;
@@ -93,8 +92,6 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         SPECT.renderer.setClearColor(0x000000, 1.0);
         SPECT.renderer.setSize(viewerDiv.innerWidth(), viewerDiv.innerHeight());
         SPECT.renderer.shadowMapEnabled = true;
-        //VA3C.renderer.shadowMapSoft = true;
-        //VA3C.renderer.shadowMapType = THREE.PCFSoftShadowMap;
         SPECT.container.append(SPECT.renderer.domElement);
 
         //set up the camera and orbit controls
@@ -151,7 +148,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //this is the method that is called to initialize the dat.GUI user interface.
     SPECT.userInterface = function () {
 
-        //append a child div to our parent and use the child to host the dat.GUI contoller
+        //append a child div to our parent and use the child to host the dat.GUI controller
         $('body').append("<div class=Spectacles_uiTarget></div>");
 
         //function to position the target div relative to the parent
@@ -190,7 +187,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //Jquery UI stuff - make divs draggable, resizable, etc.
 
         //make the attributes div draggable and resizeable
-        $('.vA3C_attributeList').draggable({ containment: "parent" });
+        //$('.Spectacles_attributeList').draggable({ containment: "parent" });
         //$('.attributeList').resizable();
 
     };
@@ -199,18 +196,11 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //call this method to enable the file open UI.
     SPECT.openLocalFiles = function () {
 
-        //append the file open interface to our parent div --- couldn't get this to work!  it has something to do with appending the file input with jquery...
-        //VA3C.viewerDiv.append("<div id='OpenLocalFile' class='vA3C_openFile'><h2>Open a local vA3C .json file</h2><input type='file' onclick='myVA3C.jsonLoader.clearFile(event);' onchange='myVA3C.jsonLoader.openLocalFile(event);' class='vA3C_openButton'></div>");
-        //VA3C.viewerDiv.append("<div id='OpenLocalFile' class='vA3C_openFile'><h2>Open a local vA3C .json file</h2><input type='file' class='vA3C_openButton'></div>");
-        //$('.vA3C_openButton').click(function(event){
-        //VA3C.jsonLoader.openLocalFile(event);
-        //});
-
         //function to position the loading div
         var setFileOpen = function () {
 
             //set the position of the UI relative to the viewer div
-            var targetDiv = $('.vA3C_openFile');
+            var targetDiv = $('.Spectacles_openFile');
 
             //get upper left coordinates of the viewer div - we'll use these for positioning
             var x = (SPECT.viewerDiv.position().left + SPECT.viewerDiv.width()) / 2;
@@ -231,10 +221,10 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         var fileFolder = SPECT.datGui.addFolder('File');
         SPECT.UIfolders.File = fileFolder;
         fileFolder.add(SPECT.uiVariables, 'openLocalFile');
-        //fileFolder.add(VA3C.uiVariables, 'openUrl'); //not working yet - commenting out for now
+        //fileFolder.add(SPECT.uiVariables, 'openUrl'); //not working yet - commenting out for now
 
         //make the file open divs draggable
-        $(".vA3C_openFile").draggable({ containment: "parent" });
+        //$(".Spectacles_openFile").draggable({ containment: "parent" });
     };
 
     //**********************TOP LEVEL METHOD!!!**********************************
@@ -249,22 +239,22 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
             SPECT.renderer.setClearColor(e);
         });
         //scene fog
-        //sceneFolder.add(VA3C.uiVariables, 'fog').onChange(function(e){
-        //        VA3C.lightingRig.setFog(e);
+        //sceneFolder.add(SPECT.uiVariables, 'fog').onChange(function(e){
+        //        Spectacles.lightingRig.setFog(e);
         //    });
 
         //append a new div to the parent to use for stats visualization
-        SPECT.viewerDiv.append("<div id='vA3C_stats' style= 'position: fixed;'></div>");
+        SPECT.viewerDiv.append("<div id='Spectacles_stats' style= 'position: fixed;'></div>");
 
         //set up the stats window
         SPECT.stats = new Stats();
         SPECT.stats.domElement.style.cssText = 'opacity: 0.5; position: fixed; ';
-        $('#vA3C_stats').append(SPECT.stats.domElement);
+        $('#Spectacles_stats').append(SPECT.stats.domElement);
 
         //position the stats relative to the parent
         var positionStats = function () {
             //set the position of the UI relative to the viewer div
-            var targetDiv = $('#vA3C_stats');
+            var targetDiv = $('#Spectacles_stats');
 
             //get lower right coordinates of the viewer div - we'll use these for positioning
             //get upper left coordinates of the viewer div - we'll use these for positioning
@@ -279,7 +269,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         positionStats();
 
         //hide the stats the first time through.
-        $('#vA3C_stats').hide();
+        $('#Spectacles_stats').hide();
 
 
         //respond to resize
@@ -290,10 +280,10 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //create the controller in the UI
         SPECT.UIfolders.Scene.add(SPECT.uiVariables, 'showStats').onChange(function (e) {
             if (e) {
-                $('#vA3C_stats').show();
+                $('#Spectacles_stats').show();
             }
             else {
-                $('#vA3C_stats').hide();
+                $('#Spectacles_stats').hide();
             }
         });
     };
@@ -315,11 +305,11 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
             SPECT.lightingRig.shadowsOnOff(e);
         });
         /*//solar az and alt
-         lightsFolder.add(VA3C.uiVariables, 'solarAzimuth')
+         lightsFolder.add(SPECT.uiVariables, 'solarAzimuth')
          .min(0)
          .max(359)
          .step(1);
-         lightsFolder.add(VA3C.uiVariables, 'solarAltitude')
+         lightsFolder.add(SPECT.uiVariables, 'solarAltitude')
          .min(0)
          .max(90)
          .step(0.1);*/
@@ -413,7 +403,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
         //hide the input form and blackout
         $("#OpenLocalFile").css("visibility", "hidden");
-        $(".vA3C_loading").show();
+        $(".Spectacles_loading").show();
     };
 
     SPECT.jsonLoader.clearFile = function (event) {
@@ -432,7 +422,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         /*//try to parse the json and load the scene
         $.getJSON(url, function( data){
             //call our load scene function
-            VA3C.jsonLoader.loadSceneFromJson(data);
+            SPECT.jsonLoader.loadSceneFromJson(data);
         });*/
 
         //yep that didn't work - No 'Access-Control-Allow-Origin error.
@@ -455,7 +445,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //function to hide the 'open file' dialogs.
     SPECT.jsonLoader.hideOpenDialog = function () {
         //hide the input form
-        $(".vA3C_openFile").css("visibility", "hidden");
+        $(".Spectacles_openFile").css("visibility", "hidden");
     };
 
     //a function to populate our scene object from a json file
@@ -479,7 +469,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         var loader = new THREE.ObjectLoader();
         SPECT.scene = new THREE.Scene();
         SPECT.scene = loader.parse(jsonToLoad);
-        //VA3C.scene.fog = new THREE.FogExp2(0x000000, 0.025);
+        //SPECT.scene.fog = new THREE.FogExp2(0x000000, 0.025);
 
         //call helper functions
         SPECT.jsonLoader.makeFaceMaterialsWork();
@@ -503,8 +493,8 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         }
 
         //hide the blackout
-        $(".vA3C_blackout").hide();
-        $(".vA3C_loading").hide();
+        $(".Spectacles_blackout").hide();
+        $(".Spectacles_loading").hide();
 
     };
 
@@ -522,11 +512,11 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                 var userData = items[i].userData;
 
                 //if this is a face materials object, make all of the mesh faces point to the correct material
-                if (currentMat.hasOwnProperty("materials") && userData.hasOwnProperty("VA3C_FaceColorIndexes")) {
+                if (currentMat.hasOwnProperty("materials") && userData.hasOwnProperty("Spectacles_FaceColorIndexes")) {
 
-                    //get the 'VA3C_FaceColorIndexes' string out of the mesh's user data object,
+                    //get the 'Spectacles_FaceColorIndexes' string out of the mesh's user data object,
                     //and break it into an array of face material indexes
-                    var faceColors = userData.VA3C_FaceColorIndexes.split(",");
+                    var faceColors = userData.Spectacles_FaceColorIndexes.split(",");
 
                     //loop over the faces in the geometry and make the face.materialIndex reference the face's index
                     for (var j in geo.faces) {
@@ -535,8 +525,8 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                     //tell three.js to update the element in the render loop
                     geo.elementsNeedUpdate = true;
 
-                    //remove the VA3C_FaceColorIndexes property from the userdata object
-                    delete userData['VA3C_FaceColorIndexes'];
+                    //remove the Spectacles_FaceColorIndexes property from the userdata object
+                    delete userData['Spectacles_FaceColorIndexes'];
                 }
             }
         }
@@ -614,7 +604,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //var sphereGeo = new THREE.SphereGeometry(geo.boundingSphere.radius);
         //var sphereMesh = new THREE.Mesh(sphereGeo, new THREE.MeshLambertMaterial({color: 0xffffff, transparent: true, opacity: 0.25}));
         //sphereMesh.position.set(geo.boundingSphere.center.x,geo.boundingSphere.center.y,geo.boundingSphere.center.z);
-        //VA3C.scene.add(sphereMesh);
+        //SPECT.scene.add(sphereMesh);
     };
 
     //zoom extents function.  we call this when we load a file (and from the UI), so it shouldn't be in the UI constructor
@@ -641,7 +631,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         SPECT.renderer.setClearColor(hexColor);
     };
 
-    //Top level function to open a json file - As requested by Mostapha.  Essentially a wrapper for VA3C.jsonLoader.loadSceneFromJson
+    //Top level function to open a json file - As requested by Mostapha.  Essentially a wrapper for Spectacles.jsonLoader.loadSceneFromJson
     SPECT.loadNewModel = function (jsonData) {
         SPECT.jsonLoader.loadSceneFromJson(jsonData);
     };
@@ -850,7 +840,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
             //show the openLocalFile Div
             $("#OpenLocalFile").css("visibility", "visible");
-            $(".vA3C_blackout").show();
+            $(".Spectacles_blackout").show();
 
             //this should show a form that lets a user open a file
 
@@ -858,7 +848,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                 //if the escape key  is pressed
                 if (e.keyCode == 27) {
                     $("#OpenLocalFile").css("visibility", "hidden");
-                    $(".vA3C_blackout").hide();
+                    $(".Spectacles_blackout").hide();
                 }
             });
 
@@ -980,7 +970,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //attributes list div - the div that we populate with attributes when an item is selected
     SPECT.attributes.attributeListDiv = {};
 
-    //initialize attribtes function.  Call this once when initializing VA3C to set up all of the
+    //initialize attribtes function.  Call this once when initializing Spectacles to set up all of the
     //event handlers and application logic.
     SPECT.attributes.init = function () {
 
@@ -999,11 +989,11 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         SPECT.attributes.previousClickedElement = new SPECT.attributes.SelectedElement();
 
         //Append a div to the parent for us to populate with attributes.  handle any jquery.ui initialization here too
-        SPECT.viewerDiv.append("<div class='vA3C_attributeList'></div>");
+        SPECT.viewerDiv.append("<div class='Spectacles_attributeList'></div>");
         //function to position and size the blackout div
         var setAttributeList = function () {
             //set the position of the UI relative to the viewer div
-            var targetDiv = $('.vA3C_attributeList');
+            var targetDiv = $('.Spectacles_attributeList');
 
             //get upper left coordinates of the viewer div - we'll use these for positioning
             var win = $(window);
@@ -1023,7 +1013,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         });
 
         //set our local variable to the div we just created
-        SPECT.attributes.attributeListDiv = $('.vA3C_attributeList');
+        SPECT.attributes.attributeListDiv = $('.Spectacles_attributeList');
         //make the attributes div draggable and resizeable
         SPECT.attributes.attributeListDiv.draggable({ containment: "parent" });
 
@@ -1079,7 +1069,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         mouse3D.normalize();
 
         //Get a list of objects that intersect with the selection vector.  We'll take the first one (the closest)
-        //the VA3C element list is populated in the VA3C.jsonLoader.processSceneGeometry function
+        //the Spectacles element list is populated in the Spectacles.jsonLoader.processSceneGeometry function
         //which is called every time a scene is loaded
         var raycaster = new THREE.Raycaster(SPECT.camera.position, mouse3D);
         var intersects = raycaster.intersectObjects(SPECT.attributes.elementList);
@@ -1253,7 +1243,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         SPECT.attributes.attributeListDiv.empty();
 
         //create a header
-        SPECT.attributes.attributeListDiv.append('<div class="vA3C_attributeListHeader">Element Attributes</div>');
+        SPECT.attributes.attributeListDiv.append('<div class="Spectacles_attributeListHeader">Element Attributes</div>');
 
         //add an empty item for some breathing room
         SPECT.attributes.attributeListDiv.append('<div class="item">-------</div>');
