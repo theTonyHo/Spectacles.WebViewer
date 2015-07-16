@@ -15,10 +15,10 @@ $(document).ready(function(){
         mySpectacles = new SPECTACLES($("#Spectacles_output"), data, function(app){
 
             //call the UI / functionality modules
-            app.setBackgroundColor(0xFFFFFF);
             app.userInterface();
             app.sceneUI();
             app.lightingUI();
+            app.setBackgroundColor(0xFFFFFF);
         });
     });
 

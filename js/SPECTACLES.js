@@ -234,7 +234,9 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         var sceneFolder = SPECT.datGui.addFolder('Scene');
         SPECT.UIfolders.Scene = sceneFolder;
         //background color control
-        sceneFolder.addColor(SPECT.uiVariables, 'backgroundColor').onChange(function (e) {
+        sceneFolder.addColor(SPECT.uiVariables, 'backgroundColor')
+            .listen()
+            .onChange(function (e) {
             //set background color
             SPECT.renderer.setClearColor(e);
         });
@@ -628,7 +630,10 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //set background color function.  we need this at the top level so a user can set the color of her (embedded) viewer without
     //editing our library or using our UI.
     SPECT.setBackgroundColor = function (hexColor) {
+        //update renderer
         SPECT.renderer.setClearColor(hexColor);
+        //update internal variable
+        SPECT.uiVariables.backgroundColor = hexColor;
     };
 
     //Top level function to open a json file - As requested by Mostapha.  Essentially a wrapper for Spectacles.jsonLoader.loadSceneFromJson
