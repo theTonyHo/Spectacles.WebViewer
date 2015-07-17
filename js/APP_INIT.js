@@ -25,6 +25,10 @@ $(document).ready(function(){
             app.viewAndSelectionUI();
             app.viewsUI();
             app.layersUI();
+
+            //add a logo and a link or two.
+            //fing the top level dat.gui element - class name dg main
+            $(".dg.main").children().first().prepend('<div class="Spectacles_Header"><img src="docs/SPECTACLES_100px.png" style="padding: 5px"><h2>Spectacles</h2></div>');
         });
     });
 });

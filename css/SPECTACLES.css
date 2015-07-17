@@ -75,3 +75,14 @@
     width: 300px;
     z-index: 10;
 }
+
+.Spectacles_Header {
+    background-color: #e8e8e8;
+    border-bottom: 1px solid #ddd;
+}
+
+.Spectacles_Header h2{
+    position: absolute;
+    top: 7px;
+    right: 75px;
+}

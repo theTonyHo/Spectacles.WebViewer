@@ -149,7 +149,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     SPECT.userInterface = function () {
 
         //append a child div to our parent and use the child to host the dat.GUI controller
-        $('body').append("<div class=Spectacles_uiTarget></div>");
+        $('body').append('<div class="Spectacles_uiTarget"></div>');
 
         //function to position the target div relative to the parent
         var positionGuiDiv = function () {
@@ -162,7 +162,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
             var y = SPECT.viewerDiv.offset().top - win.scrollTop();
 
             //set the position
-            targetDiv.css('left', (x - 300).toString() + "px");
+            targetDiv.css('left', (x - 310).toString() + "px");
             targetDiv.css('top', y.toString() + "px");
         }
         positionGuiDiv();
