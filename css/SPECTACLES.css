@@ -108,3 +108,9 @@
     top: 7px;
     right: 75px;
 }
+
+.Spectacles_Footer {
+    position: fixed;
+    z-index: 10;
+    white-space: nowrap;
+}

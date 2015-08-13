@@ -98,6 +98,35 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
             setLoading();
         });
 
+
+        //append a footer.  Feel free to strip this out if you'd like to! ;]
+        SPECT.viewerDiv.append(
+            "<div class='Spectacles_Footer'>" +
+            "<img src='https://raw.githubusercontent.com/tt-acm/Spectacles.WebViewer/gh-pages/docs/SPECTACLES_20px.png'> " +
+            "Spectacles is developed by the <a href='http://core.thorntontomasetti.com/' target='blank'>CORE studio</a>.  " +
+            "Copyright <a href='http://thorntontomasetti.com/' target='blank'>Thornton Tomasetti</a> 2015." +
+            "</div>");
+        //function to position footer
+        var setFooter = function(){
+            //set the position of the UI relative to the viewer div
+            var targetDiv = $('.Spectacles_Footer');
+
+            //get lower right coordinates of the viewer div - we'll use these for positioning
+            var win = $(window);
+            var x = SPECT.viewerDiv.offset().left - win.scrollLeft();
+            var y = (SPECT.viewerDiv.offset().top - win.scrollTop()) + SPECT.viewerDiv.height();
+
+            //set the position
+            targetDiv.css('left', x.toString() + "px");
+            targetDiv.css('top', (y - 25).toString() + "px");
+        };
+        //call the first time through
+        setFooter();
+        //respond to resize of the parent div
+        SPECT.viewerDiv.resize(function () {
+            setFooter();
+        });
+
         //empty scene
         SPECT.scene = new THREE.Scene();
 
