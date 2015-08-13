@@ -31,7 +31,7 @@ var mySpectacles;
 $(document).ready(function(){
 
     //load our sample JSON file from disk
-    $.getJSON("./js/va3c.json", function( data ){
+    $.getJSON("./js/rst_basic_sample_project.json", function( data ){
 
         //once loaded, initialize a Spectacles viewer by passing in the div to bind to, the json data, and a callback function
         //where we can enable application functionality in nice clean chunks
