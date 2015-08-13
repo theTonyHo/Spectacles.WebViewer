@@ -37,6 +37,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     SPECT.renderer = {};       //the THREE.js renderer object
     SPECT.clock = {};          //the THREE.js clock
     SPECT.stats = undefined;               //the Stats object
+    SPECT.backgroundColor = 0xFFFFFF;
 
 
     //*********************
@@ -108,7 +109,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                 antialias: true
             }
         );
-        SPECT.renderer.setClearColor(0x000000, 1.0);
+        SPECT.renderer.setClearColor(SPECT.backgroundColor, 1.0);
         SPECT.renderer.setSize(viewerDiv.innerWidth(), viewerDiv.innerHeight());
         SPECT.renderer.shadowMapEnabled = true;
         SPECT.container.append(SPECT.renderer.domElement);
@@ -649,10 +650,12 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //set background color function.  we need this at the top level so a user can set the color of her (embedded) viewer without
     //editing our library or using our UI.
     SPECT.setBackgroundColor = function (hexColor) {
+        //set top level app variable
+        SPECT.backgroundColor = hexColor;
         //update renderer
-        SPECT.renderer.setClearColor(hexColor);
+        SPECT.renderer.setClearColor(SPECT.backgroundColor);
         //update internal variable
-        SPECT.uiVariables.backgroundColor = hexColor;
+        SPECT.uiVariables.backgroundColor = SPECT.backgroundColor;
     };
 
     //Top level function to open a json file - As requested by Mostapha.  Essentially a wrapper for Spectacles.jsonLoader.loadSceneFromJson
@@ -881,7 +884,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //SCENE VARIABLES
 
         //background color
-        this.backgroundColor = "#000000";
+        this.backgroundColor = SPECT.backgroundColor;
 
         //ambient light color
         this.ambientLightColor = '#666666';
