@@ -1,4 +1,4 @@
-![Spectacles Logo](/docs/SPECTACLES_LOGO.jpg)
+![Spectacles Logo](/docs/SPECTACLES_LOGO_250.jpg)
 
 Spectacles 3D Model Viewer
 ======
