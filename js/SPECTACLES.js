@@ -976,7 +976,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
 
         //selected object color
-        this.selectedObjectColor = "#FF00FF";
+        this.selectedObjectColor = "#FFFF00";
 
         //show stats?
         this.showStats = false;
@@ -1039,7 +1039,11 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         SPECT.attributes.projector = new THREE.Projector();
 
         //a material used to represent a clicked object
-        SPECT.attributes.clickedMaterial = new THREE.MeshBasicMaterial({ color: "rgb(255,0,255)", opacity: 1, side: 2 }); //red semi-transparent, double-sided
+        SPECT.attributes.clickedMaterial = new THREE.MeshLambertMaterial({
+            color: "rgb(255,255,0)",
+            ambient: "rgb(255,255,0)",
+            side: 2
+        });
 
         //an object used to store the state of a selected element.
         SPECT.attributes.previousClickedElement = new SPECT.attributes.SelectedElement();
@@ -1345,6 +1349,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //function to handle changing the color of a selected element
     SPECT.attributes.setSelectedObjectColor = function (col) {
         SPECT.attributes.clickedMaterial.color = new THREE.Color(col);
+        SPECT.attributes.clickedMaterial.ambient = new THREE.Color(col);
     };
 
     //function to purge local variables within this object.  When a user loads a new scene, we have to clear out the old stuff
