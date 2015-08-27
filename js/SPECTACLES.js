@@ -1463,11 +1463,11 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //if we found a view, activate it
         if (view) {
             //get the eyePos from the current view
-            var eyePos = new THREE.Vector3(-view.eye.X, view.eye.Z, view.eye.Y);
+            var eyePos = new THREE.Vector3(view.eye.X, view.eye.Y, view.eye.Z);
 
             //get the targetPos from the current view
             //var dir = new THREE.Vector3(-view.target.X, view.target.Z, view.target.Y);
-            var dir = new THREE.Vector3(-view.target.X, -view.target.Z, -view.target.Y);
+            var dir = new THREE.Vector3(view.target.X, -view.target.Y, view.target.Z);
 
             SPECT.orbitControls.target.set(dir.x, dir.y, dir.z);
             SPECT.orbitControls.object.position.set(eyePos.x, eyePos.y, eyePos.z);
