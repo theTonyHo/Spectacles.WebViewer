@@ -1,6 +1,7 @@
 ![Spectacles Logo](/docs/SPECTACLES_LOGO_250.jpg)
 
-Spectacles is a hackable BIM viewer for the web. 
+Spectacles 
+A hackable BIM viewer for the web. 
 ======
 Spectacles allows authors in the AEC industry to easily publish their 3D design work on the web, for free.  Users can export models (including BIM data) from popular authoring applications (Grasshopper and Revit to start), and view the models in a web browser.
 
