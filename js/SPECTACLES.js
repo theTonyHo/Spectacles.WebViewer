@@ -502,6 +502,10 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //a function to populate our scene object from a json file
     SPECT.jsonLoader.loadSceneFromJson = function (jsonToLoad) {
 
+        //show the blackout and loading message
+        $(".Spectacles_blackout").show();
+        $(".Spectacles_loading").show();
+
         //restore the initial state of the top level application objects
         if (SPECT.attributes.elementList.length > 0) {
             SPECT.attributes.purge();
@@ -894,11 +898,10 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //OPEN FILE
         this.openLocalFile = function () {
 
-            //show the openLocalFile Div
+            //this should show a form that lets a user open a file
             $("#OpenLocalFile").css("visibility", "visible");
             $(".Spectacles_blackout").show();
 
-            //this should show a form that lets a user open a file
 
             $(document).keyup(function (e) {
                 //if the escape key  is pressed
