@@ -440,6 +440,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
                 if (data !== null) {
                     SPECT.jsonLoader.loadSceneFromJson(data);
+                    SPECT.zoomExtents();
                 }
 
 
@@ -530,7 +531,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         SPECT.jsonLoader.makeFaceMaterialsWork();
         SPECT.jsonLoader.processSceneGeometry();
         SPECT.jsonLoader.computeBoundingSphere();
-        SPECT.zoomExtents();
+        //SPECT.zoomExtents();
         SPECT.views.storeDefaultView();
 
         //set up the lighting rig
@@ -1636,6 +1637,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //if the user passed in a json file, load it.
     if (jsonFileData !== undefined) {
         SPECT.jsonLoader.loadSceneFromJson(jsonFileData);
+        SPECT.zoomExtents();
     }
 
     //if the user supplied a callback function, call it and pass our application object (this)
