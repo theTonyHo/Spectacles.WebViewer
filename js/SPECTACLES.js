@@ -554,6 +554,84 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
     };
 
+    //a function to add a textured obj/mtl pair to a scene
+    SPECT.jsonLoader.addObjMtlToScene = function (objPath, mtlPath){
+        //hide the blackout
+        $(".Spectacles_blackout").show();
+        $(".Spectacles_loading").show();
+
+        //new objmtl loader object
+        var loader = new THREE.OBJMTLLoader();
+
+        //try to load the pair
+        loader.load(objPath, mtlPath,
+            function(loadedObj){
+
+                //we need to mirror the objects coming in around the X axis and the Z
+                var mat = (new THREE.Matrix4()).identity();
+                mat.elements[0] = -1;
+                mat.elements[10] = -1;
+
+                //process the loaded geometry - make sure faces are 2 sided, merge vertices and compute, etc
+                for(var i=0; i<loadedObj.children.length; i++){
+                    if(loadedObj.children[i] instanceof THREE.Mesh){
+
+                        //apply the matrix to accurately position the mesh
+                        loadedObj.children[i].geometry.applyMatrix(mat);
+
+                        //replace phong material with Lambert.  Phonga don't play so nice with our lighting setup
+                        var lambert = new THREE.MeshLambertMaterial();
+                        lambert.map = loadedObj.children[i].material.map;
+                        loadedObj.children[i].material = lambert;
+
+                        //set up for transparency
+                        loadedObj.children[i].material.side = 2;
+                        loadedObj.children[i].material.transparent = true;
+                        loadedObj.children[i].material.opacity = 1;
+                    }
+                    if(loadedObj.children[i] instanceof THREE.Object3D){
+                        //loop over the children of the object
+                        for(var j=0; j<loadedObj.children[i].children.length; j++){
+                            //apply the matrix to accurately position the mesh
+                            loadedObj.children[i].children[j].geometry.applyMatrix(mat);
+
+                            //replace phong material with Lambert.  Phonga don't play so nice with our lighting setup
+                            var lambert = new THREE.MeshLambertMaterial();
+                            lambert.map = loadedObj.children[i].children[j].material.map;
+                            loadedObj.children[i].children[j].material = lambert;
+
+                            //set up for transparency
+                            loadedObj.children[i].children[j].material.side = 2;
+                            loadedObj.children[i].children[j].transparent = true;
+                            loadedObj.children[i].children[j].opacity = 1;
+                        }
+                    }
+                }
+
+                //add our loaded object to the scene
+                SPECT.scene.add(loadedObj);
+
+                //call zoom extents
+                SPECT.jsonLoader.computeBoundingSphere();
+                SPECT.zoomExtents();
+
+                //hide the blackout
+                $(".Spectacles_blackout").hide();
+                $(".Spectacles_loading").hide();
+            },
+
+            // Function called when downloads progress
+            function ( xhr ) {
+                //console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+            },
+
+            // Function called when downloads error
+            function ( er ) {
+                //console.log( 'An error happened' );
+            }
+        );
+    };
+
     //call this function to set a geometry's face material index to the same index as the face number
     //this lets meshfacematerials work - the json loader only gets us part of the way there (I think we are missing something when we create mesh faces...)
     SPECT.jsonLoader.makeFaceMaterialsWork = function () {
@@ -662,6 +740,8 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //sphereMesh.position.set(geo.boundingSphere.center.x,geo.boundingSphere.center.y,geo.boundingSphere.center.z);
         //SPECT.scene.add(sphereMesh);
     };
+
+
 
     //zoom extents function.  we call this when we load a file (and from the UI), so it shouldn't be in the UI constructor
     SPECT.zoomExtents = function () {
