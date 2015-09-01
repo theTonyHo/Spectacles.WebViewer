@@ -34,8 +34,7 @@ $(document).ready(function(){
 
             //call the UI / functionality modules
             app.setBackgroundColor(0xFFFFFF);
-            app.jsonLoader.addObjMtlToScene("./js/Lion-exported.obj", "./js/Lion-exported.mtl");
-            //app.zoomExtents();
+            app.jsonLoader.addObjMtlToScene("./js/Lion-exported.obj", "./js/Lion-exported.mtl", true);
 
         });
     });

@@ -555,7 +555,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     };
 
     //a function to add a textured obj/mtl pair to a scene
-    SPECT.jsonLoader.addObjMtlToScene = function (objPath, mtlPath){
+    SPECT.jsonLoader.addObjMtlToScene = function (objPath, mtlPath, zoomExtentsAfterLoad){
         //hide the blackout
         $(".Spectacles_blackout").show();
         $(".Spectacles_loading").show();
@@ -611,9 +611,13 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                 //add our loaded object to the scene
                 SPECT.scene.add(loadedObj);
 
-                //call zoom extents
+                //update lights
                 SPECT.jsonLoader.computeBoundingSphere();
-                SPECT.zoomExtents();
+                SPECT.lightingRig.updateLights();
+
+                //zoom extents?
+                if(zoomExtentsAfterLoad) { SPECT.zoomExtents(); }
+
 
                 //hide the blackout
                 $(".Spectacles_blackout").hide();
@@ -876,6 +880,25 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         SPECT.lightingRig.sunLight = light;
         SPECT.scene.add(light);
 
+    };
+
+    //function to update lights in the scene.
+    //should be called when new geometry is added to a running scene (.obj for instance)
+    SPECT.lightingRig.updateLights = function () {
+
+        //remove lights from scene
+        SPECT.scene.remove(this.ambientLight);
+        SPECT.scene.remove(this.sunLight);
+        for(var i=0; i<this.pointLights.length; i++){
+            SPECT.scene.remove(this.pointLights[i]);
+        }
+
+        //call purge and create
+        this.purge();
+        this.createLights();
+
+        //call update materials - this counts as a deep update for sure!
+        this.updateSceneMaterials();
     };
 
     //function that adjusts the point lights' color
