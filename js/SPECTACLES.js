@@ -1046,42 +1046,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
         //zoom selected
         this.zoomSelected = function () {
-
-            //return if no selection
-            if (SPECT.attributes.previousClickedElement.id === -1) return;
-
-            //get selected item and it's bounding sphere
-            var bndSphere;
-            var sel = SPECT.attributes.previousClickedElement.object;
-
-            //if the object is a mesh, grab the sphere
-            if (sel.hasOwnProperty('geometry')) {
-                //sel.computeBoundingSphere();
-                bndSphere = sel.geometry.boundingSphere;
-            }
-
-                //if the object is object3d, merge all of it's geometries and compute the sphere of the merge
-            else {
-                var geo = new THREE.Geometry();
-                for (var i in sel.children) {
-                    geo.merge(sel.children[i].geometry);
-                }
-                geo.computeBoundingSphere();
-                bndSphere = geo.boundingSphere;
-            }
-
-
-            //get the radius of the sphere and use it to compute an offset.  This is a mashup of theo's method and ours from platypus
-            var r = bndSphere.radius;
-            var offset = r / Math.tan(Math.PI / 180.0 * SPECT.orbitControls.object.fov * 0.5);
-            var vector = new THREE.Vector3(0, 0, 1);
-            var dir = vector.applyQuaternion(SPECT.orbitControls.object.quaternion);
-            var newPos = new THREE.Vector3();
-            dir.multiplyScalar(offset * 1.1);
-            newPos.addVectors(bndSphere.center, dir);
-            SPECT.orbitControls.object.position.set(newPos.x, newPos.y, newPos.z);
-            SPECT.orbitControls.target = new THREE.Vector3(bndSphere.center.x, bndSphere.center.y, bndSphere.center.z);
-
+            SPECT.zoomSelected();
         };
 
 
@@ -1471,6 +1436,50 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         }
         this.elementList = [];
     };
+
+    //function to zoom to the selected object
+    SPECT.zoomSelected = function(){
+
+        //return if init has not been called
+        if ( SPECT.attributes.previousClickedElement === undefined) return;
+
+        //return if no selection
+        if (SPECT.attributes.previousClickedElement.id === -1) return;
+
+        //get selected item and it's bounding sphere
+        var bndSphere;
+        var sel = SPECT.attributes.previousClickedElement.object;
+
+        //if the object is a mesh, grab the sphere
+        if (sel.hasOwnProperty('geometry')) {
+            //sel.computeBoundingSphere();
+            bndSphere = sel.geometry.boundingSphere;
+        }
+
+        //if the object is object3d, merge all of it's geometries and compute the sphere of the merge
+        else {
+            var geo = new THREE.Geometry();
+            for (var i in sel.children) {
+                geo.merge(sel.children[i].geometry);
+            }
+            geo.computeBoundingSphere();
+            bndSphere = geo.boundingSphere;
+        }
+
+
+        //get the radius of the sphere and use it to compute an offset.  This is a mashup of theo's method and ours from platypus
+        var r = bndSphere.radius;
+        var offset = r / Math.tan(Math.PI / 180.0 * SPECT.orbitControls.object.fov * 0.5);
+        var vector = new THREE.Vector3(0, 0, 1);
+        var dir = vector.applyQuaternion(SPECT.orbitControls.object.quaternion);
+        var newPos = new THREE.Vector3();
+        dir.multiplyScalar(offset * 1.1);
+        newPos.addVectors(bndSphere.center, dir);
+        SPECT.orbitControls.object.position.set(newPos.x, newPos.y, newPos.z);
+        SPECT.orbitControls.target = new THREE.Vector3(bndSphere.center.x, bndSphere.center.y, bndSphere.center.z);
+
+    };
+
 
 
     //*********************
