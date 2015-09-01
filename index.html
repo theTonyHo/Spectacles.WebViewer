@@ -71,8 +71,17 @@
 
 
 <div id='OpenLocalFile' class='Spectacles_openFile'>
-    <h2>Open a local Spectacles .json file</h2>
-    <input type='file' onclick='mySpectacles.jsonLoader.clearFile(event)' onchange='mySpectacles.jsonLoader.openLocalFile(event)' class='Spectacles_openButton'>
+    <h1>Open a Spectacles .json file</h1>
+    <div class='Spectacles_openButton'>
+        <h3>Open a local file</h3>
+        <input id='Spectacles_openButton' type='file' onclick='mySpectacles.jsonLoader.clearFile(event)' onchange='mySpectacles.jsonLoader.openLocalFile(event)'>
+    </div>
+    <div class="Spectacles_openUrl">
+        <h3>Or, paste a url below, and press the 'Open from URL' button.</h3>
+        <input type ="text" id="Spectacles_urlInput" style="width: 335px">
+        <button type="button" onclick='mySpectacles.jsonLoader.openUrl($("#Spectacles_urlInput").val())'>Open from URL</button>
+    </div>
+
 </div>
 
 
