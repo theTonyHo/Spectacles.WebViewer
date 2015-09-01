@@ -55,21 +55,25 @@
     background-color: #ffffff;
     visibility: hidden;
     position: fixed;
-    margin-top: -50px;
-    margin-left: -150px;
-    width: 300px;
-    height: 100px;
+    margin-top: -100px;
+    margin-left: -175px;
+    width: 350px;
+    height: 200px;
     z-index: 1001;
     font-size: 100%;
 }
 
-.Spectacles_openFile h2 {
+.Spectacles_openFile h1 {
     margin: 0px;
 }
 
 .Spectacles_openButton {
-    margin: 25px;
+    margin-top: 15px;
     justify-content: center;
+}
+
+.Spectacles_openUrl {
+    margin-top: 15px;
 }
 
 .Spectacles_blackout {

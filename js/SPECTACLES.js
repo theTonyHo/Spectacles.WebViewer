@@ -269,7 +269,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //add a file folder containing the file open button
         var fileFolder = SPECT.datGui.addFolder('File');
         SPECT.UIfolders.File = fileFolder;
-        fileFolder.add(SPECT.uiVariables, 'openLocalFile');
+        fileFolder.add(SPECT.uiVariables, 'openLocalFile').name("Open Spectacles Files");
         //fileFolder.add(SPECT.uiVariables, 'openUrl'); //not working yet - commenting out for now
 
         //make the file open divs draggable
@@ -468,30 +468,35 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //function to open a file from url
     SPECT.jsonLoader.openUrl = function (url) {
 
-        //hide the openUrl div
-        this.hideOpenDialog();
+        //hide form, show loading
+        $("#OpenLocalFile").css("visibility", "hidden");
+        $(".Spectacles_loading").show();
 
-        /*//try to parse the json and load the scene
-        $.getJSON(url, function( data){
-            //call our load scene function
-            SPECT.jsonLoader.loadSceneFromJson(data);
-        });*/
-
-        //yep that didn't work - No 'Access-Control-Allow-Origin error.
-        //this seemed like it might do the trick: http://www.html5rocks.com/en/tutorials/cors/   but did not
-        //giving up for now...
-        //it is possible though
-        //
-        //these guys do it: https://www.jsoneditoronline.org/
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function (res) {
-                console.log(res);
-            }
-        });
-
+        //try to parse the json and load the scene
+        try {
+            $.getJSON(url, function (data) {
+                try {
+                    //call our load scene function
+                    SPECT.jsonLoader.loadSceneFromJson(data);
+                } catch (e) {
+                    $(".Spectacles_loading").hide();
+                    $(".Spectacles_blackout").hide();
+                    consle.log("Spectacles load a scene using the json data from the URL you provided!  Here's the error:");
+                    console.log(e);
+                }
+            })
+                //some ajax errors don't throw.  this catches those errors (i think)
+                .fail(function(){
+                    $(".Spectacles_loading").hide();
+                    $(".Spectacles_blackout").hide();
+                    console.log("Spectacles could not get a json file from the URL you provided - this is probably a security thing on the json file host's end.");
+                });
+        } catch (e) {
+            $(".Spectacles_loading").hide();
+            $(".Spectacles_blackout").hide();
+            console.log("Spectacles could not get a json file from the URL you provided!  Here's the error:");
+            console.log(e);
+        }
     };
 
     //function to hide the 'open file' dialogs.
