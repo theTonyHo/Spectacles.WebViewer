@@ -441,6 +441,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                 if (data !== null) {
                     SPECT.jsonLoader.loadSceneFromJson(data);
                     SPECT.zoomExtents();
+                    SPECT.views.storeDefaultView();
                 }
 
 
