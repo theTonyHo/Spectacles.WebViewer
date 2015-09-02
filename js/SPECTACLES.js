@@ -1618,12 +1618,12 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     SPECT.views.storeDefaultView = function () {
         SPECT.views.defaultView.eye = {};
         SPECT.views.defaultView.target = {};
-        SPECT.views.defaultView.eye.X = -SPECT.orbitControls.object.position.x;
-        SPECT.views.defaultView.eye.Y = SPECT.orbitControls.object.position.z;
-        SPECT.views.defaultView.eye.Z = SPECT.orbitControls.object.position.y;
-        SPECT.views.defaultView.target.X = -SPECT.orbitControls.target.x;
-        SPECT.views.defaultView.target.Y = SPECT.orbitControls.target.z;
-        SPECT.views.defaultView.target.Z = SPECT.orbitControls.target.y;
+        SPECT.views.defaultView.eye.X = SPECT.orbitControls.object.position.x;
+        SPECT.views.defaultView.eye.Y = SPECT.orbitControls.object.position.y;
+        SPECT.views.defaultView.eye.Z = SPECT.orbitControls.object.position.z;
+        SPECT.views.defaultView.target.X = SPECT.orbitControls.target.x;
+        SPECT.views.defaultView.target.Y = SPECT.orbitControls.target.y;
+        SPECT.views.defaultView.target.Z = SPECT.orbitControls.target.z;
 
     };
 
