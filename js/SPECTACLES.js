@@ -537,7 +537,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         SPECT.jsonLoader.processSceneGeometry();
         SPECT.jsonLoader.computeBoundingSphere();
         //SPECT.zoomExtents();
-        SPECT.views.storeDefaultView();
+        //SPECT.views.storeDefaultView();
 
         //set up the lighting rig
         SPECT.lightingRig.createLights();//note - i think we should check to see if there is an active lighting UI and use those colors to init lights if so...
@@ -1755,6 +1755,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     if (jsonFileData !== undefined) {
         SPECT.jsonLoader.loadSceneFromJson(jsonFileData);
         SPECT.zoomExtents();
+        SPECT.views.storeDefaultView();
     }
 
     //if the user supplied a callback function, call it and pass our application object (this)
