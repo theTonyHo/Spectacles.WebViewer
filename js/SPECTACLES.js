@@ -1386,17 +1386,19 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                 if (SPECT.scene.name.indexOf("BIM") != -1) {
 
                     var v = SPECT.scene.userData.views.split(",");
-                    var revitView = {}
-                    revitView.name = "RevitView";
-                    revitView.eye = {};
-                    revitView.eye.X = v[0] * 1000;
-                    revitView.eye.Y = v[1] * 1000;
-                    revitView.eye.Z = v[2] * 1000;
-                    revitView.target = {};
-                    revitView.target.X = v[3];
-                    revitView.target.Y = v[4];
-                    revitView.target.Z = v[5];
-                    SPECT.views.viewList.push(revitView);
+                    for (var k = 0; k < v.length; k+=7) {
+                        var revitView = {}
+                        revitView.name = v[k];
+                        revitView.eye = {};
+                        revitView.eye.X = v[k+1]*254;
+                        revitView.eye.Y = v[k + 2] * 254;
+                        revitView.eye.Z = v[k + 3] * 254;
+                        revitView.target = {};
+                        revitView.target.X = v[k + 4] * 254;
+                        revitView.target.Y = v[k + 5] * 254;
+                        revitView.target.Z = v[k + 6] * 254;
+                        SPECT.views.viewList.push(revitView);
+                    }
                 }
 
                     //for Grasshopper files
