@@ -269,7 +269,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //add a file folder containing the file open button
         var fileFolder = SPECT.datGui.addFolder('File');
         SPECT.UIfolders.File = fileFolder;
-        fileFolder.add(SPECT.uiVariables, 'openLocalFile');
+        fileFolder.add(SPECT.uiVariables, 'openLocalFile').name("Open Spectacles Files");
         //fileFolder.add(SPECT.uiVariables, 'openUrl'); //not working yet - commenting out for now
 
         //make the file open divs draggable
@@ -440,6 +440,8 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
                 if (data !== null) {
                     SPECT.jsonLoader.loadSceneFromJson(data);
+                    SPECT.zoomExtents();
+                    SPECT.views.storeDefaultView();
                 }
 
 
@@ -467,30 +469,35 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //function to open a file from url
     SPECT.jsonLoader.openUrl = function (url) {
 
-        //hide the openUrl div
-        this.hideOpenDialog();
+        //hide form, show loading
+        $("#OpenLocalFile").css("visibility", "hidden");
+        $(".Spectacles_loading").show();
 
-        /*//try to parse the json and load the scene
-        $.getJSON(url, function( data){
-            //call our load scene function
-            SPECT.jsonLoader.loadSceneFromJson(data);
-        });*/
-
-        //yep that didn't work - No 'Access-Control-Allow-Origin error.
-        //this seemed like it might do the trick: http://www.html5rocks.com/en/tutorials/cors/   but did not
-        //giving up for now...
-        //it is possible though
-        //
-        //these guys do it: https://www.jsoneditoronline.org/
-
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function (res) {
-                console.log(res);
-            }
-        });
-
+        //try to parse the json and load the scene
+        try {
+            $.getJSON(url, function (data) {
+                try {
+                    //call our load scene function
+                    SPECT.jsonLoader.loadSceneFromJson(data);
+                } catch (e) {
+                    $(".Spectacles_loading").hide();
+                    $(".Spectacles_blackout").hide();
+                    consle.log("Spectacles load a scene using the json data from the URL you provided!  Here's the error:");
+                    console.log(e);
+                }
+            })
+                //some ajax errors don't throw.  this catches those errors (i think)
+                .fail(function(){
+                    $(".Spectacles_loading").hide();
+                    $(".Spectacles_blackout").hide();
+                    console.log("Spectacles could not get a json file from the URL you provided - this is probably a security thing on the json file host's end.");
+                });
+        } catch (e) {
+            $(".Spectacles_loading").hide();
+            $(".Spectacles_blackout").hide();
+            console.log("Spectacles could not get a json file from the URL you provided!  Here's the error:");
+            console.log(e);
+        }
     };
 
     //function to hide the 'open file' dialogs.
@@ -501,6 +508,10 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
     //a function to populate our scene object from a json file
     SPECT.jsonLoader.loadSceneFromJson = function (jsonToLoad) {
+
+        //show the blackout and loading message
+        $(".Spectacles_blackout").show();
+        $(".Spectacles_loading").show();
 
         //restore the initial state of the top level application objects
         if (SPECT.attributes.elementList.length > 0) {
@@ -526,8 +537,8 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         SPECT.jsonLoader.makeFaceMaterialsWork();
         SPECT.jsonLoader.processSceneGeometry();
         SPECT.jsonLoader.computeBoundingSphere();
-        SPECT.zoomExtents();
-        SPECT.views.storeDefaultView();
+        //SPECT.zoomExtents();
+        //SPECT.views.storeDefaultView();
 
         //set up the lighting rig
         SPECT.lightingRig.createLights();//note - i think we should check to see if there is an active lighting UI and use those colors to init lights if so...
@@ -547,6 +558,88 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         $(".Spectacles_blackout").hide();
         $(".Spectacles_loading").hide();
 
+    };
+
+    //a function to add a textured obj/mtl pair to a scene
+    SPECT.jsonLoader.addObjMtlToScene = function (objPath, mtlPath, zoomExtentsAfterLoad){
+        //hide the blackout
+        $(".Spectacles_blackout").show();
+        $(".Spectacles_loading").show();
+
+        //new objmtl loader object
+        var loader = new THREE.OBJMTLLoader();
+
+        //try to load the pair
+        loader.load(objPath, mtlPath,
+            function(loadedObj){
+
+                //we need to mirror the objects coming in around the X axis and the Z
+                var mat = (new THREE.Matrix4()).identity();
+                mat.elements[0] = -1;
+                mat.elements[10] = -1;
+
+                //process the loaded geometry - make sure faces are 2 sided, merge vertices and compute, etc
+                for(var i=0; i<loadedObj.children.length; i++){
+                    if(loadedObj.children[i] instanceof THREE.Mesh){
+
+                        //apply the matrix to accurately position the mesh
+                        loadedObj.children[i].geometry.applyMatrix(mat);
+
+                        //replace phong material with Lambert.  Phonga don't play so nice with our lighting setup
+                        var lambert = new THREE.MeshLambertMaterial();
+                        lambert.map = loadedObj.children[i].material.map;
+                        loadedObj.children[i].material = lambert;
+
+                        //set up for transparency
+                        loadedObj.children[i].material.side = 2;
+                        loadedObj.children[i].material.transparent = true;
+                        loadedObj.children[i].material.opacity = 1;
+                    }
+                    if(loadedObj.children[i] instanceof THREE.Object3D){
+                        //loop over the children of the object
+                        for(var j=0; j<loadedObj.children[i].children.length; j++){
+                            //apply the matrix to accurately position the mesh
+                            loadedObj.children[i].children[j].geometry.applyMatrix(mat);
+
+                            //replace phong material with Lambert.  Phonga don't play so nice with our lighting setup
+                            var lambert = new THREE.MeshLambertMaterial();
+                            lambert.map = loadedObj.children[i].children[j].material.map;
+                            loadedObj.children[i].children[j].material = lambert;
+
+                            //set up for transparency
+                            loadedObj.children[i].children[j].material.side = 2;
+                            loadedObj.children[i].children[j].transparent = true;
+                            loadedObj.children[i].children[j].opacity = 1;
+                        }
+                    }
+                }
+
+                //add our loaded object to the scene
+                SPECT.scene.add(loadedObj);
+
+                //update lights
+                SPECT.jsonLoader.computeBoundingSphere();
+                SPECT.lightingRig.updateLights();
+
+                //zoom extents?
+                if(zoomExtentsAfterLoad) { SPECT.zoomExtents(); }
+
+
+                //hide the blackout
+                $(".Spectacles_blackout").hide();
+                $(".Spectacles_loading").hide();
+            },
+
+            // Function called when downloads progress
+            function ( xhr ) {
+                //console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+            },
+
+            // Function called when downloads error
+            function ( er ) {
+                //console.log( 'An error happened' );
+            }
+        );
     };
 
     //call this function to set a geometry's face material index to the same index as the face number
@@ -657,6 +750,8 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //sphereMesh.position.set(geo.boundingSphere.center.x,geo.boundingSphere.center.y,geo.boundingSphere.center.z);
         //SPECT.scene.add(sphereMesh);
     };
+
+
 
     //zoom extents function.  we call this when we load a file (and from the UI), so it shouldn't be in the UI constructor
     SPECT.zoomExtents = function () {
@@ -793,6 +888,25 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
     };
 
+    //function to update lights in the scene.
+    //should be called when new geometry is added to a running scene (.obj for instance)
+    SPECT.lightingRig.updateLights = function () {
+
+        //remove lights from scene
+        SPECT.scene.remove(this.ambientLight);
+        SPECT.scene.remove(this.sunLight);
+        for(var i=0; i<this.pointLights.length; i++){
+            SPECT.scene.remove(this.pointLights[i]);
+        }
+
+        //call purge and create
+        this.purge();
+        this.createLights();
+
+        //call update materials - this counts as a deep update for sure!
+        this.updateSceneMaterials();
+    };
+
     //function that adjusts the point lights' color
     //this is a handler for a UI variable
     SPECT.lightingRig.setPointLightsColor = function (col) {
@@ -894,11 +1008,10 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //OPEN FILE
         this.openLocalFile = function () {
 
-            //show the openLocalFile Div
+            //this should show a form that lets a user open a file
             $("#OpenLocalFile").css("visibility", "visible");
             $(".Spectacles_blackout").show();
 
-            //this should show a form that lets a user open a file
 
             $(document).keyup(function (e) {
                 //if the escape key  is pressed
@@ -934,42 +1047,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
         //zoom selected
         this.zoomSelected = function () {
-
-            //return if no selection
-            if (SPECT.attributes.previousClickedElement.id === -1) return;
-
-            //get selected item and it's bounding sphere
-            var bndSphere;
-            var sel = SPECT.attributes.previousClickedElement.object;
-
-            //if the object is a mesh, grab the sphere
-            if (sel.hasOwnProperty('geometry')) {
-                //sel.computeBoundingSphere();
-                bndSphere = sel.geometry.boundingSphere;
-            }
-
-                //if the object is object3d, merge all of it's geometries and compute the sphere of the merge
-            else {
-                var geo = new THREE.Geometry();
-                for (var i in sel.children) {
-                    geo.merge(sel.children[i].geometry);
-                }
-                geo.computeBoundingSphere();
-                bndSphere = geo.boundingSphere;
-            }
-
-
-            //get the radius of the sphere and use it to compute an offset.  This is a mashup of theo's method and ours from platypus
-            var r = bndSphere.radius;
-            var offset = r / Math.tan(Math.PI / 180.0 * SPECT.orbitControls.object.fov * 0.5);
-            var vector = new THREE.Vector3(0, 0, 1);
-            var dir = vector.applyQuaternion(SPECT.orbitControls.object.quaternion);
-            var newPos = new THREE.Vector3();
-            dir.multiplyScalar(offset * 1.1);
-            newPos.addVectors(bndSphere.center, dir);
-            SPECT.orbitControls.object.position.set(newPos.x, newPos.y, newPos.z);
-            SPECT.orbitControls.target = new THREE.Vector3(bndSphere.center.x, bndSphere.center.y, bndSphere.center.z);
-
+            SPECT.zoomSelected();
         };
 
 
@@ -1360,6 +1438,50 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         this.elementList = [];
     };
 
+    //function to zoom to the selected object
+    SPECT.zoomSelected = function(){
+
+        //return if init has not been called
+        if ( SPECT.attributes.previousClickedElement === undefined) return;
+
+        //return if no selection
+        if (SPECT.attributes.previousClickedElement.id === -1) return;
+
+        //get selected item and it's bounding sphere
+        var bndSphere;
+        var sel = SPECT.attributes.previousClickedElement.object;
+
+        //if the object is a mesh, grab the sphere
+        if (sel.hasOwnProperty('geometry')) {
+            //sel.computeBoundingSphere();
+            bndSphere = sel.geometry.boundingSphere;
+        }
+
+        //if the object is object3d, merge all of it's geometries and compute the sphere of the merge
+        else {
+            var geo = new THREE.Geometry();
+            for (var i in sel.children) {
+                geo.merge(sel.children[i].geometry);
+            }
+            geo.computeBoundingSphere();
+            bndSphere = geo.boundingSphere;
+        }
+
+
+        //get the radius of the sphere and use it to compute an offset.  This is a mashup of theo's method and ours from platypus
+        var r = bndSphere.radius;
+        var offset = r / Math.tan(Math.PI / 180.0 * SPECT.orbitControls.object.fov * 0.5);
+        var vector = new THREE.Vector3(0, 0, 1);
+        var dir = vector.applyQuaternion(SPECT.orbitControls.object.quaternion);
+        var newPos = new THREE.Vector3();
+        dir.multiplyScalar(offset * 1.1);
+        newPos.addVectors(bndSphere.center, dir);
+        SPECT.orbitControls.object.position.set(newPos.x, newPos.y, newPos.z);
+        SPECT.orbitControls.target = new THREE.Vector3(bndSphere.center.x, bndSphere.center.y, bndSphere.center.z);
+
+    };
+
+
 
     //*********************
     //*********************
@@ -1469,7 +1591,9 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
             //get the targetPos from the current view
             //var dir = new THREE.Vector3(-view.target.X, view.target.Z, view.target.Y);
-            var dir = new THREE.Vector3(view.target.X, -view.target.Y, view.target.Z);
+
+            var dir = new THREE.Vector3(view.target.X, view.target.Y, view.target.Z);
+
 
             SPECT.orbitControls.target.set(dir.x, dir.y, dir.z);
             SPECT.orbitControls.object.position.set(eyePos.x, eyePos.y, eyePos.z);
@@ -1499,12 +1623,12 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     SPECT.views.storeDefaultView = function () {
         SPECT.views.defaultView.eye = {};
         SPECT.views.defaultView.target = {};
-        SPECT.views.defaultView.eye.X = -SPECT.orbitControls.object.position.x;
-        SPECT.views.defaultView.eye.Y = SPECT.orbitControls.object.position.z;
-        SPECT.views.defaultView.eye.Z = SPECT.orbitControls.object.position.y;
-        SPECT.views.defaultView.target.X = -SPECT.orbitControls.target.x;
-        SPECT.views.defaultView.target.Y = SPECT.orbitControls.target.z;
-        SPECT.views.defaultView.target.Z = SPECT.orbitControls.target.y;
+        SPECT.views.defaultView.eye.X = SPECT.orbitControls.object.position.x;
+        SPECT.views.defaultView.eye.Y = SPECT.orbitControls.object.position.y;
+        SPECT.views.defaultView.eye.Z = SPECT.orbitControls.object.position.z;
+        SPECT.views.defaultView.target.X = SPECT.orbitControls.target.x;
+        SPECT.views.defaultView.target.Y = SPECT.orbitControls.target.y;
+        SPECT.views.defaultView.target.Z = SPECT.orbitControls.target.z;
 
     };
 
@@ -1635,6 +1759,8 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //if the user passed in a json file, load it.
     if (jsonFileData !== undefined) {
         SPECT.jsonLoader.loadSceneFromJson(jsonFileData);
+        SPECT.zoomExtents();
+        SPECT.views.storeDefaultView();
     }
 
     //if the user supplied a callback function, call it and pass our application object (this)
@@ -1646,6 +1772,3 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     }
 
 };
-
-
-
