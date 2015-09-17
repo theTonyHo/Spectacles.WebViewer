@@ -479,10 +479,12 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                 try {
                     //call our load scene function
                     SPECT.jsonLoader.loadSceneFromJson(data);
+                    SPECT.zoomExtents();
+                    SPECT.views.storeDefaultView();
                 } catch (e) {
                     $(".Spectacles_loading").hide();
                     $(".Spectacles_blackout").hide();
-                    consle.log("Spectacles load a scene using the json data from the URL you provided!  Here's the error:");
+                    console.log("Spectacles load a scene using the json data from the URL you provided!  Here's the error:");
                     console.log(e);
                 }
             })
