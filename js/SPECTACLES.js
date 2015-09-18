@@ -1673,7 +1673,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //function to create the user interface for view selection
     SPECT.layers.CreateLayerUI = function () {
         //if there are saved layers, create a checkbox for each of them
-        if ((SPECT.layers.layerList.length == 1 && SPECT.layers.layerList[0].name != "Default") || SPECT.layers.layerList.length > 1) {
+        if (SPECT.layers.layerList.length > 0) {
             layerStrings = [];
             for (var i = 0; i < SPECT.layers.layerList.length; i++) {
                 //for Grasshopper files, this will return the name of the layer
