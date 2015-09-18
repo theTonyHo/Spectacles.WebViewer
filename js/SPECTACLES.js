@@ -1514,13 +1514,13 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                         var revitView = {}
                         revitView.name = v[k];
                         revitView.eye = {};
-                        revitView.eye.X = v[k+1];
-                        revitView.eye.Y = v[k + 2];
-                        revitView.eye.Z = v[k + 3];
+                        revitView.eye.X = parseFloat(v[k + 1]);
+                        revitView.eye.Y = parseFloat(v[k + 2]);
+                        revitView.eye.Z = parseFloat(v[k + 3]);
                         revitView.target = {};
-                        revitView.target.X = v[k + 4];
-                        revitView.target.Y = v[k + 5];
-                        revitView.target.Z = v[k + 6];
+                        revitView.target.X = parseFloat(v[k + 4]);
+                        revitView.target.Y = parseFloat(v[k + 5]);
+                        revitView.target.Z = parseFloat(v[k + 6]);
                         SPECT.views.viewList.push(revitView);
                     }
                 }
