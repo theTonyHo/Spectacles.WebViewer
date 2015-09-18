@@ -417,7 +417,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //a function to open a file from disk
     //found this method here: http://www.javascripture.com/FileReader
     SPECT.jsonLoader.openLocalFile = function (event) {
-
+       
         //the input object
         var input = event.target;
 
@@ -1009,6 +1009,9 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
         //OPEN FILE
         this.openLocalFile = function () {
+
+            //If an object is selected, this will make sure to hide the attributes. 
+            SPECT.attributes.attributeListDiv.hide("slow");
 
             //this should show a form that lets a user open a file
             $("#OpenLocalFile").css("visibility", "visible");
