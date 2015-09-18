@@ -15,6 +15,16 @@ Get the Exporters!
 - [Revit Exporter download](https://github.com/tt-acm/Spectacles.RevitExporter)
 - [Revit Exporter Github repository](https://github.com/tt-acm/Spectacles.RevitExporter)
 
+Check out the Embedded Viewer Examples
+=====
+These examples show how a Spectcles viewer can be embedded in another web page, and how the user interface can be customized, or removed entirely.
+- [#1 - No User Interface](http://tt-acm.github.io/Spectacles.WebViewer/examples/1/)
+- [#2 - Multiple Viewers](http://tt-acm.github.io/Spectacles.WebViewer/examples/2/)
+- [#3 - Scene and Lighting UI](http://tt-acm.github.io/Spectacles.WebViewer/examples/3/)
+- [#4 - Layers UI](http://tt-acm.github.io/Spectacles.WebViewer/examples/4/)
+- [#5 - View and Selection UI](http://tt-acm.github.io/Spectacles.WebViewer/examples/5/)
+- [#6 - Mash up Spectacles.json and .Obj/.Mtl](http://tt-acm.github.io/Spectacles.WebViewer/examples/6/)
+
 Goals
 ======
 
