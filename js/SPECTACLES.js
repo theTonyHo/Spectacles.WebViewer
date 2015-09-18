@@ -1552,7 +1552,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
             viewStrings.sort();
 
             //set the first view to be the current view
-            this.setView(viewStrings[0]);
+            this.setView('DefaultView');
 
             //make sure the view and selection folder exists - if it doesn't, throw an error
             if (SPECT.UIfolders.View_and_Selection === undefined) throw "View and selection folder must be initialized";
