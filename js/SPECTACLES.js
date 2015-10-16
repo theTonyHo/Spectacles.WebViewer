@@ -482,7 +482,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                 } catch (e) {
                     $(".Spectacles_loading").hide();
                     $(".Spectacles_blackout").hide();
-                    consle.log("Spectacles load a scene using the json data from the URL you provided!  Here's the error:");
+                    console.log("Spectacles load a scene using the json data from the URL you provided!  Here's the error:");
                     console.log(e);
                 }
             })
