@@ -533,8 +533,30 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         var loader = new THREE.ObjectLoader();
         SPECT.scene = new THREE.Scene();
         SPECT.scene = loader.parse(jsonToLoad);
-        //SPECT.scene.fog = new THREE.FogExp2(0x000000, 0.025);
 
+        // Add generator info, differentiate between TriceratopsExporter vs Spectacles
+        SPECT.scene.generator = jsonToLoad.metadata.generator;
+
+        // Add custom property to object in scene such as ElementID
+        SPECT.scene.traverse(function (child) {
+            for(var i=0; i<jsonToLoad.object.children.length; i++){
+                var jsonItem = jsonToLoad.object.children[i];
+
+                if (jsonItem.uuid == child.uuid)
+                {
+                    child.ElementID = jsonItem.ElementID;
+                    child.userData.ElementID = jsonItem.ElementID; // Add to userData
+                }
+                }
+        });
+
+        // If ElementID is added to `property`, the object can quickly be queried using .getObjectByProperty().
+        // Otherwise a customfunction to loop through all objects and find in userData.
+        var foundObject = SPECT.scene.getObjectByProperty("ElementID", "8dd04c7b-b09f-42a8-ab73-788dd3b31a10");
+        console.log("FOUND", foundObject);
+
+        //SPECT.scene.fog = new THREE.FogExp2(0x000000, 0.025);
+        
         //call helper functions
         SPECT.jsonLoader.makeFaceMaterialsWork();
         SPECT.jsonLoader.processSceneGeometry();
@@ -692,9 +714,18 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
             //element to the attributes elements list so selection works.
             if (items[i].hasOwnProperty("geometry")) {
                 //three.js stuff
-                items[i].geometry.mergeVertices();
-                items[i].geometry.computeFaceNormals();
-                items[i].geometry.computeVertexNormals();
+                // When it's THREE.Geometry
+                if (items[i].geometry instanceof THREE.Geometry) {
+    
+                    items[i].geometry.mergeVertices();
+                    items[i].geometry.computeFaceNormals();
+                    items[i].geometry.computeVertexNormals();
+                    
+                }
+                if (items[i].geometry instanceof THREE.BufferGeometry) {
+                    // Triceratops.
+                    // Do Something.                    
+                }
                 items[i].castShadow = true;
                 items[i].receiveShadow = true;
                 //add element to our list of elements that can be selected
@@ -735,10 +766,18 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     SPECT.jsonLoader.computeBoundingSphere = function () {
         //loop over the children of the THREE scene, merge them into a mesh,
         //and compute a bounding sphere for the scene
-        var geo = new THREE.Geometry();
+        var geo = new THREE.Geometry();        
         SPECT.scene.traverse(function (child) {
             if (child instanceof THREE.Mesh) {
-                geo.merge(child.geometry);
+                // a VERY simple way to calculate bounding sphere. by adding centre of child's sphere.
+                if (child.geometry instanceof THREE.BufferGeometry) {
+                    child.geometry.computeBoundingSphere();
+                    geo.vertices.push(child.geometry.boundingSphere.center); //Add vertices of the bounding spheres.
+                }
+                if (child.geometry instanceof THREE.Geometry) {
+                    geo.merge(child.geometry);
+                }
+                
             }
         });
         geo.computeBoundingSphere();
