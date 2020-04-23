@@ -372,6 +372,10 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //add view folder
         var viewFolder = SPECT.datGui.addFolder('View_and_Selection');
         SPECT.UIfolders.View_and_Selection = viewFolder;
+        // Find by ElementID
+        viewFolder.add(SPECT.uiVariables, 'findElementID').onChange(function (e) {
+            SPECT.findByElementID(e);
+        });
         //zoom extents and selected
         viewFolder.add(SPECT.uiVariables, 'zoomExtents');
         viewFolder.add(SPECT.uiVariables, 'zoomSelected');
@@ -1078,6 +1082,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         this.layers = "layers";
 
         //VIEW AND SELECTION VARIABLES
+        this.findElementID = "";
 
         //zoom extents
         this.zoomExtents = function () {
@@ -1838,6 +1843,15 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     };
 
 
+
+    SPECT.findByElementID = function (ElementID) {
+        
+        // If ElementID is added to `property`, the object can quickly be queried using .getObjectByProperty().
+        // Otherwise a customfunction to loop through all objects and find in userData.
+        var foundObject = SPECT.scene.getObjectByProperty("ElementID", ElementID);
+        SPECT.attributes.SelectElement(foundObject);
+
+    }
 
 
 
