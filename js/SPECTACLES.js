@@ -1207,6 +1207,55 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //and needs to be painted back with the materials in the materials array
     };
 
+    SPECT.attributes.SelectElement = function (element) {
+        
+        if (element == null){
+            return
+        }
+        //var to track whether the intersect is an object3d or a mesh
+        var isObject3D = false;
+
+        //did we intersect a mesh that belongs to an Object3D or a Geometry?  The former comes from Revit, the latter from GH
+        if (element.parent.type === "Object3D") {
+            isObject3D = true;
+        }
+        //was this element already selected?  if so, do nothing.
+        if (element.id === SPECT.attributes.previousClickedElement.id) return;
+
+        //was another element already selected?
+        if (SPECT.attributes.previousClickedElement.id !== -1) {
+            //restore previously selected object's state
+            SPECT.attributes.restorePreviouslySelectedObject();
+        }
+
+        //store the selected object
+        SPECT.attributes.storeSelectedObject(element, isObject3D);
+
+
+        //paint the selected object[s] with the application's 'selected' material
+        if (isObject3D) {
+            //loop over the children and paint each one
+            for (var i = 0; i < element.parent.children.length; i++) {
+                SPECT.attributes.paintElement(element.parent.children[i], SPECT.attributes.clickedMaterial);
+            }
+        }
+
+        else {
+            //paint the mesh with the clicked material
+            SPECT.attributes.paintElement(element, SPECT.attributes.clickedMaterial);
+        }
+
+
+        //populate the attribute list with the object's user data
+        if (isObject3D) {
+            SPECT.attributes.populateAttributeList(element.parent.userData);
+        }
+        else {
+            SPECT.attributes.populateAttributeList(element.userData);
+        }
+    
+    }
+
     //Mouse Click event handler for selection.  When a user clicks on the viewer, this gets called
     SPECT.attributes.onMouseClick = function (event) {
 
