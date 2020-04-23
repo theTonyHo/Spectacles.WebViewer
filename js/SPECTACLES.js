@@ -1102,7 +1102,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //LIGHTING VARIABLES
 
         //point lights color
-        this.pointLightsColor = '#666666';
+        this.pointLightsColor = '#ffffff';
 
         //sun light on / off
         this.shadows = false;
