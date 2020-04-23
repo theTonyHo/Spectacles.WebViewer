@@ -47,6 +47,7 @@ $(document).ready(function(){
     }
 
     var modelURL = getUrlParam("modelURL", "./sampleModels/blank_scene.json");
+    var selectElementID = getUrlParam("selectElementID", "");
 
     //load a blank_scene JSON file from disk
     $.getJSON(modelURL, function( data ){
@@ -64,5 +65,7 @@ $(document).ready(function(){
             app.viewsUI();
             app.layersUI();
         });
+        
+        mySpectacles.findByElementID(selectElementID);
     });
 });
