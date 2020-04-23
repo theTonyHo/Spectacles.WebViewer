@@ -371,6 +371,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     SPECT.viewAndSelectionUI = function () {
         //add view folder
         var viewFolder = SPECT.datGui.addFolder('View_and_Selection');
+        viewFolder.closed = false;
         SPECT.UIfolders.View_and_Selection = viewFolder;
         // Find by ElementID
         viewFolder.add(SPECT.uiVariables, 'findElementID').onChange(function (e) {
