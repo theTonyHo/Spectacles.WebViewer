@@ -30,8 +30,26 @@ var mySpectacles;
 //fires when everything has loaded
 $(document).ready(function(){
 
-    //load our sample JSON file from disk
-    $.getJSON("./sampleModels/rst_basic_sample_project.json", function( data ){
+    // Get URL variables. https://html-online.com/articles/get-url-parameters-javascript/
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+    function getUrlParam(parameter, defaultvalue){
+        var urlparameter = defaultvalue;
+        if(window.location.href.indexOf(parameter) > -1){
+            urlparameter = getUrlVars()[parameter];
+            }
+        return urlparameter;
+    }
+
+    var modelURL = getUrlParam("modelURL", "./sampleModels/blank_scene.json");
+
+    //load a blank_scene JSON file from disk
+    $.getJSON(modelURL, function( data ){
 
         //once loaded, initialize a Spectacles viewer by passing in the div to bind to, the json data, and a callback function
         //where we can enable application functionality in nice clean chunks
