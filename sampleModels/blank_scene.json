@@ -1,0 +1,15 @@
+{
+    "metadata": {
+        "version": 4.3,
+        "type": "Object",
+        "generator": "ManualTextEditor"
+    },
+    "geometries": [],
+    "materials": [],
+    "object": {
+        "type": "Scene",
+        "name": "Blank Scene",
+        "matrix": [1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0],
+        "children": []
+    }
+}
