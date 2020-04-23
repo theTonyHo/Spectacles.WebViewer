@@ -550,11 +550,6 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
                 }
         });
 
-        // If ElementID is added to `property`, the object can quickly be queried using .getObjectByProperty().
-        // Otherwise a customfunction to loop through all objects and find in userData.
-        var foundObject = SPECT.scene.getObjectByProperty("ElementID", "8dd04c7b-b09f-42a8-ab73-788dd3b31a10");
-        console.log("FOUND", foundObject);
-
         //SPECT.scene.fog = new THREE.FogExp2(0x000000, 0.025);
         
         //call helper functions
