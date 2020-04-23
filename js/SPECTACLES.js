@@ -269,7 +269,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //add a file folder containing the file open button
         var fileFolder = SPECT.datGui.addFolder('File');
         SPECT.UIfolders.File = fileFolder;
-        fileFolder.add(SPECT.uiVariables, 'openLocalFile').name("Open Spectacles Files");
+        fileFolder.add(SPECT.uiVariables, 'openLocalFile').name("Open JSON Files");
         //fileFolder.add(SPECT.uiVariables, 'openUrl'); //not working yet - commenting out for now
 
         //make the file open divs draggable
