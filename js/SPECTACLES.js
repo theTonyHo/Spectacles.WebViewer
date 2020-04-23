@@ -370,7 +370,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
     //call this method to enable view and selection UI
     SPECT.viewAndSelectionUI = function () {
         //add view folder
-        var viewFolder = SPECT.datGui.addFolder('View_and_Selection');
+        var viewFolder = SPECT.datGui.addFolder('View and Selection');
         viewFolder.closed = false;
         SPECT.UIfolders.View_and_Selection = viewFolder;
         // Find by ElementID
@@ -1109,7 +1109,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
 
         //selected object color
-        this.selectedObjectColor = "#FFFF00";
+        this.selectedObjectColor = "#7DFFAA";
 
         //show stats?
         this.showStats = false;
@@ -1173,7 +1173,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
         //a material used to represent a clicked object
         SPECT.attributes.clickedMaterial = new THREE.MeshLambertMaterial({
-            color: "rgb(255,255,0)",
+            color: "rgb(125, 255, 170)", // THis to match with selectedObjectColor.
             ambient: "rgb(255,255,0)",
             side: 2
         });
