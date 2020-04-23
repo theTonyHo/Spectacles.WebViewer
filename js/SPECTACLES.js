@@ -140,7 +140,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         );
         SPECT.renderer.setClearColor(SPECT.backgroundColor, 1.0);
         SPECT.renderer.setSize(viewerDiv.innerWidth(), viewerDiv.innerHeight());
-        SPECT.renderer.shadowMapEnabled = true;
+        SPECT.renderer.shadowMap.enabled = true;
         SPECT.container.append(SPECT.renderer.domElement);
 
         //set up the camera and orbit controls
@@ -909,18 +909,18 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         light.position.set(center.x + offset, center.y + offset, center.z + offset);
         light.target.position.set(center.x, center.y, center.z);
         //light.castShadow = true;
-        light.shadowCameraNear = 1;
-        light.shadowCameraFar = offset * 2.5;
-        light.shadowCameraTop = offset * 1.2;
-        light.shadowCameraRight = offset * 1.2;
-        light.shadowCameraBottom = offset * -1.2;
-        light.shadowCameraLeft = offset * -1.2;
+        light.shadow.camera.near = 1;
+        light.shadow.camera.far = offset * 2.5;
+        light.shadow.camera.top = offset * 1.2;
+        light.shadow.camera.right = offset * 1.2;
+        light.shadow.camera.bottom = offset * -1.2;
+        light.shadow.camera.left= offset * -1.2;
         light.distance = 0;
         light.intensity = 0;
-        light.shadowBias = 0.001;
-        light.shadowMapHeight = SPECT.viewerDiv.innerHeight();
-        light.shadowMapWidth = SPECT.viewerDiv.innerWidth();
-        light.shadowDarkness = 0.65;
+        light.shadow.bias = 0.001;
+        light.shadow.mapSize.height = SPECT.viewerDiv.innerHeight();
+        light.shadow.mapSize.width = SPECT.viewerDiv.innerWidth();
+        light.shadow.darkness = 0.65;
         //light.shadowCameraVisible = true;
 
         //add the light to our scene and to our app object
