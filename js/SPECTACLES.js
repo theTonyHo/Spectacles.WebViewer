@@ -514,6 +514,16 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
 
     //a function to populate our scene object from a json file
     SPECT.jsonLoader.loadSceneFromJson = function (jsonToLoad) {
+        
+        // Spectacles legacy support
+        if (jsonToLoad.metadata.generator.startsWith("Spectacles")) {
+            console.warn("Spectacles legacy model detected. Unable to load json data");
+            //hide the blackout
+            $(".Spectacles_blackout").hide();
+            $(".Spectacles_loading").hide();
+            
+            return
+        }
 
         //show the blackout and loading message
         $(".Spectacles_blackout").show();
