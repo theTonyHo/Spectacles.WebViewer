@@ -576,7 +576,7 @@ var SPECTACLES = function (divToBind, jsonFileData, callback) {
         //hide the blackout
         $(".Spectacles_blackout").hide();
         $(".Spectacles_loading").hide();
-
+        console.info("Scene", SPECT.scene);
     };
 
     //a function to add a textured obj/mtl pair to a scene
